@@ -1,0 +1,124 @@
+<>xml version="1.0" encoding="utf-8"?>
+<MTConnectStreams xsi:schemaLocation="urn:mazakusa.com:MazakStreams:1.3 /schemas/MazakStreams_1.3.xsd">
+<Header creationTime="2023-06-23T22:54:13Z" sender="DMZ-MTCNCT" instanceId="1676385054" version="1.4.0.12" bufferSize="131072" nextSequence="2209129" firstSequence="2209029" lastSequence="2340100"/>
+<Streams>
+<DeviceStream name="MFMS10-MC1" uuid="8f9f9054-9b7e-1d1a-8838-0f4dd6c77a3a">
+<ComponentStream component="Controller" name="controller" componentId="cont">
+<Samples>
+<AccumulatedTime dataItemId="atime" timestamp="2023-03-13T17:07:57.365927Z" name="auto_time" sequence="2209030" subType="x:AUTO">53238026</AccumulatedTime>
+<AccumulatedTime dataItemId="atime" timestamp="2023-03-13T17:07:58.850305Z" name="auto_time" sequence="2209041" subType="x:AUTO">53238028</AccumulatedTime>
+<AccumulatedTime dataItemId="atime" timestamp="2023-03-13T17:08:00.303427Z" name="auto_time" sequence="2209052" subType="x:AUTO">53238029</AccumulatedTime>
+<AccumulatedTime dataItemId="atime" timestamp="2023-03-13T17:08:01.756556Z" name="auto_time" sequence="2209062" subType="x:AUTO">53238031</AccumulatedTime>
+<AccumulatedTime dataItemId="atime" timestamp="2023-03-13T17:08:03.209702Z" name="auto_time" sequence="2209073" subType="x:AUTO">53238032</AccumulatedTime>
+<AccumulatedTime dataItemId="atime" timestamp="2023-03-13T17:08:04.662803Z" name="auto_time" sequence="2209084" subType="x:AUTO">53238034</AccumulatedTime>
+<AccumulatedTime dataItemId="atime" timestamp="2023-03-13T17:08:06.100308Z" name="auto_time" sequence="2209094" subType="x:AUTO">53238035</AccumulatedTime>
+<AccumulatedTime dataItemId="atime" timestamp="2023-03-13T17:08:07.553434Z" name="auto_time" sequence="2209104" subType="x:AUTO">53238037</AccumulatedTime>
+<AccumulatedTime dataItemId="atime" timestamp="2023-03-13T17:08:09.006563Z" name="auto_time" sequence="2209115" subType="x:AUTO">53238038</AccumulatedTime>
+<AccumulatedTime dataItemId="atime" timestamp="2023-03-13T17:08:10.459680Z" name="auto_time" sequence="2209126" subType="x:AUTO">53238040</AccumulatedTime>
+<AccumulatedTime dataItemId="ctime" timestamp="2023-03-13T17:07:57.365927Z" name="cut_time" sequence="2209031" subType="x:CUT">37309292</AccumulatedTime>
+<AccumulatedTime dataItemId="ctime" timestamp="2023-03-13T17:07:58.850305Z" name="cut_time" sequence="2209042" subType="x:CUT">37309293</AccumulatedTime>
+<AccumulatedTime dataItemId="ctime" timestamp="2023-03-13T17:08:00.303427Z" name="cut_time" sequence="2209053" subType="x:CUT">37309295</AccumulatedTime>
+<AccumulatedTime dataItemId="ctime" timestamp="2023-03-13T17:08:01.756556Z" name="cut_time" sequence="2209063" subType="x:CUT">37309296</AccumulatedTime>
+<AccumulatedTime dataItemId="ctime" timestamp="2023-03-13T17:08:03.209702Z" name="cut_time" sequence="2209074" subType="x:CUT">37309298</AccumulatedTime>
+<AccumulatedTime dataItemId="ctime" timestamp="2023-03-13T17:08:04.662803Z" name="cut_time" sequence="2209085" subType="x:CUT">37309299</AccumulatedTime>
+<AccumulatedTime dataItemId="ctime" timestamp="2023-03-13T17:08:06.100308Z" name="cut_time" sequence="2209095" subType="x:CUT">37309300</AccumulatedTime>
+<AccumulatedTime dataItemId="ctime" timestamp="2023-03-13T17:08:07.553434Z" name="cut_time" sequence="2209105" subType="x:CUT">37309302</AccumulatedTime>
+<AccumulatedTime dataItemId="ctime" timestamp="2023-03-13T17:08:09.006563Z" name="cut_time" sequence="2209116" subType="x:CUT">37309303</AccumulatedTime>
+<AccumulatedTime dataItemId="ctime" timestamp="2023-03-13T17:08:10.459680Z" name="cut_time" sequence="2209127" subType="x:CUT">37309305</AccumulatedTime>
+</Samples>
+</ComponentStream>
+<ComponentStream component="Linear" name="X" componentId="x">
+<Samples>
+<AxisFeedrate dataItemId="xf" timestamp="2023-03-13T17:07:58.850305Z" name="Xfrt" sequence="2209034">2.413333</AxisFeedrate>
+<AxisFeedrate dataItemId="xf" timestamp="2023-03-13T17:08:00.303427Z" name="Xfrt" sequence="2209045">0.145</AxisFeedrate>
+<AxisFeedrate dataItemId="xf" timestamp="2023-03-13T17:08:01.756556Z" name="Xfrt" sequence="2209056">2.158333</AxisFeedrate>
+<AxisFeedrate dataItemId="xf" timestamp="2023-03-13T17:08:03.209702Z" name="Xfrt" sequence="2209066">3.028333</AxisFeedrate>
+<AxisFeedrate dataItemId="xf" timestamp="2023-03-13T17:08:04.662803Z" name="Xfrt" sequence="2209077">1.791667</AxisFeedrate>
+<AxisFeedrate dataItemId="xf" timestamp="2023-03-13T17:08:06.100308Z" name="Xfrt" sequence="2209088">0.4683333</AxisFeedrate>
+<AxisFeedrate dataItemId="xf" timestamp="2023-03-13T17:08:07.553434Z" name="Xfrt" sequence="2209098">2.373333</AxisFeedrate>
+<AxisFeedrate dataItemId="xf" timestamp="2023-03-13T17:08:09.006563Z" name="Xfrt" sequence="2209108">2.896667</AxisFeedrate>
+<AxisFeedrate dataItemId="xf" timestamp="2023-03-13T17:08:10.459680Z" name="Xfrt" sequence="2209119">1.521667</AxisFeedrate>
+<Position dataItemId="xpm" timestamp="2023-03-13T17:07:58.850305Z" name="Xabs" sequence="2209032" subType="ACTUAL">20.40975</Position>
+<Position dataItemId="xpm" timestamp="2023-03-13T17:08:00.303427Z" name="Xabs" sequence="2209043" subType="ACTUAL">23.4059</Position>
+<Position dataItemId="xpm" timestamp="2023-03-13T17:08:01.756556Z" name="Xabs" sequence="2209054" subType="ACTUAL">20.1096</Position>
+<Position dataItemId="xpm" timestamp="2023-03-13T17:08:03.209702Z" name="Xabs" sequence="2209064" subType="ACTUAL">21.63915</Position>
+<Position dataItemId="xpm" timestamp="2023-03-13T17:08:04.662803Z" name="Xabs" sequence="2209075" subType="ACTUAL">22.9901</Position>
+<Position dataItemId="xpm" timestamp="2023-03-13T17:08:06.100308Z" name="Xabs" sequence="2209086" subType="ACTUAL">19.60695</Position>
+<Position dataItemId="xpm" timestamp="2023-03-13T17:08:07.553434Z" name="Xabs" sequence="2209096" subType="ACTUAL">22.74215</Position>
+<Position dataItemId="xpm" timestamp="2023-03-13T17:08:09.006563Z" name="Xabs" sequence="2209106" subType="ACTUAL">21.9913</Position>
+<Position dataItemId="xpm" timestamp="2023-03-13T17:08:10.459680Z" name="Xabs" sequence="2209117" subType="ACTUAL">19.89085</Position>
+<Position dataItemId="xpm" timestamp="2023-03-13T17:08:11.912802Z" name="Xabs" sequence="2209128" subType="ACTUAL">23.2517</Position>
+<Position dataItemId="xpw" timestamp="2023-03-13T17:07:58.850305Z" name="Xpos" sequence="2209033" subType="ACTUAL">-344.61725</Position>
+<Position dataItemId="xpw" timestamp="2023-03-13T17:08:00.303427Z" name="Xpos" sequence="2209044" subType="ACTUAL">-341.6211</Position>
+<Position dataItemId="xpw" timestamp="2023-03-13T17:08:01.756556Z" name="Xpos" sequence="2209055" subType="ACTUAL">-344.9174</Position>
+<Position dataItemId="xpw" timestamp="2023-03-13T17:08:03.209702Z" name="Xpos" sequence="2209065" subType="ACTUAL">-343.38785</Position>
+<Position dataItemId="xpw" timestamp="2023-03-13T17:08:04.662803Z" name="Xpos" sequence="2209076" subType="ACTUAL">-342.0369</Position>
+<Position dataItemId="xpw" timestamp="2023-03-13T17:08:06.100308Z" name="Xpos" sequence="2209087" subType="ACTUAL">-345.42005</Position>
+<Position dataItemId="xpw" timestamp="2023-03-13T17:08:07.553434Z" name="Xpos" sequence="2209097" subType="ACTUAL">-342.28485</Position>
+<Position dataItemId="xpw" timestamp="2023-03-13T17:08:09.006563Z" name="Xpos" sequence="2209107" subType="ACTUAL">-343.0357</Position>
+<Position dataItemId="xpw" timestamp="2023-03-13T17:08:10.459680Z" name="Xpos" sequence="2209118" subType="ACTUAL">-345.13615</Position>
+</Samples>
+</ComponentStream>
+<ComponentStream component="Linear" name="Y" componentId="y">
+<Samples>
+<AxisFeedrate dataItemId="yf" timestamp="2023-03-13T17:07:58.850305Z" name="Yfrt" sequence="2209037">1.828333</AxisFeedrate>
+<AxisFeedrate dataItemId="yf" timestamp="2023-03-13T17:08:00.303427Z" name="Yfrt" sequence="2209048">3.028333</AxisFeedrate>
+<AxisFeedrate dataItemId="yf" timestamp="2023-03-13T17:08:01.756556Z" name="Yfrt" sequence="2209059">2.126667</AxisFeedrate>
+<AxisFeedrate dataItemId="yf" timestamp="2023-03-13T17:08:03.209702Z" name="Yfrt" sequence="2209069">0.1</AxisFeedrate>
+<AxisFeedrate dataItemId="yf" timestamp="2023-03-13T17:08:04.662803Z" name="Yfrt" sequence="2209080">2.438333</AxisFeedrate>
+<AxisFeedrate dataItemId="yf" timestamp="2023-03-13T17:08:06.100308Z" name="Yfrt" sequence="2209091">2.991667</AxisFeedrate>
+<AxisFeedrate dataItemId="yf" timestamp="2023-03-13T17:08:07.553434Z" name="Yfrt" sequence="2209101">1.88</AxisFeedrate>
+<AxisFeedrate dataItemId="yf" timestamp="2023-03-13T17:08:09.006563Z" name="Yfrt" sequence="2209111">0.8966667</AxisFeedrate>
+<AxisFeedrate dataItemId="yf" timestamp="2023-03-13T17:08:10.459680Z" name="Yfrt" sequence="2209122">2.621667</AxisFeedrate>
+<Position dataItemId="ypm" timestamp="2023-03-13T17:07:58.850305Z" name="Yabs" sequence="2209035" subType="ACTUAL">142.38665</Position>
+<Position dataItemId="ypm" timestamp="2023-03-13T17:08:00.303427Z" name="Yabs" sequence="2209046" subType="ACTUAL">143.9333</Position>
+<Position dataItemId="ypm" timestamp="2023-03-13T17:08:01.756556Z" name="Yabs" sequence="2209057" subType="ACTUAL">145.25365</Position>
+<Position dataItemId="ypm" timestamp="2023-03-13T17:08:03.209702Z" name="Yabs" sequence="2209067" subType="ACTUAL">142.0491</Position>
+<Position dataItemId="ypm" timestamp="2023-03-13T17:08:04.662803Z" name="Yabs" sequence="2209078" subType="ACTUAL">145.1384</Position>
+<Position dataItemId="ypm" timestamp="2023-03-13T17:08:06.100308Z" name="Yabs" sequence="2209089" subType="ACTUAL">144.1714</Position>
+<Position dataItemId="ypm" timestamp="2023-03-13T17:08:07.553434Z" name="Yabs" sequence="2209099" subType="ACTUAL">142.5044</Position>
+<Position dataItemId="ypm" timestamp="2023-03-13T17:08:09.006563Z" name="Yabs" sequence="2209109" subType="ACTUAL">145.79155</Position>
+<Position dataItemId="ypm" timestamp="2023-03-13T17:08:10.459680Z" name="Yabs" sequence="2209120" subType="ACTUAL">142.9286</Position>
+<Position dataItemId="ypw" timestamp="2023-03-13T17:07:58.850305Z" name="Ypos" sequence="2209036" subType="ACTUAL">-257.65935</Position>
+<Position dataItemId="ypw" timestamp="2023-03-13T17:08:00.303427Z" name="Ypos" sequence="2209047" subType="ACTUAL">-256.1127</Position>
+<Position dataItemId="ypw" timestamp="2023-03-13T17:08:01.756556Z" name="Ypos" sequence="2209058" subType="ACTUAL">-254.79235</Position>
+<Position dataItemId="ypw" timestamp="2023-03-13T17:08:03.209702Z" name="Ypos" sequence="2209068" subType="ACTUAL">-257.9969</Position>
+<Position dataItemId="ypw" timestamp="2023-03-13T17:08:04.662803Z" name="Ypos" sequence="2209079" subType="ACTUAL">-254.9076</Position>
+<Position dataItemId="ypw" timestamp="2023-03-13T17:08:06.100308Z" name="Ypos" sequence="2209090" subType="ACTUAL">-255.8746</Position>
+<Position dataItemId="ypw" timestamp="2023-03-13T17:08:07.553434Z" name="Ypos" sequence="2209100" subType="ACTUAL">-257.5416</Position>
+<Position dataItemId="ypw" timestamp="2023-03-13T17:08:09.006563Z" name="Ypos" sequence="2209110" subType="ACTUAL">-254.25445</Position>
+<Position dataItemId="ypw" timestamp="2023-03-13T17:08:10.459680Z" name="Ypos" sequence="2209121" subType="ACTUAL">-257.1174</Position>
+</Samples>
+</ComponentStream>
+<ComponentStream component="Linear" name="Z" componentId="z">
+<Samples>
+<AxisFeedrate dataItemId="zf" timestamp="2023-03-13T17:07:57.365927Z" name="Zfrt" sequence="2209029">0.125</AxisFeedrate>
+<AxisFeedrate dataItemId="zf" timestamp="2023-03-13T17:07:58.850305Z" name="Zfrt" sequence="2209040">0.1233333</AxisFeedrate>
+<AxisFeedrate dataItemId="zf" timestamp="2023-03-13T17:08:00.303427Z" name="Zfrt" sequence="2209051">0.1266667</AxisFeedrate>
+<AxisFeedrate dataItemId="zf" timestamp="2023-03-13T17:08:03.209702Z" name="Zfrt" sequence="2209072">0.125</AxisFeedrate>
+<AxisFeedrate dataItemId="zf" timestamp="2023-03-13T17:08:04.662803Z" name="Zfrt" sequence="2209083">0.1233333</AxisFeedrate>
+<AxisFeedrate dataItemId="zf" timestamp="2023-03-13T17:08:09.006563Z" name="Zfrt" sequence="2209114">0.1266667</AxisFeedrate>
+<AxisFeedrate dataItemId="zf" timestamp="2023-03-13T17:08:10.459680Z" name="Zfrt" sequence="2209125">0.125</AxisFeedrate>
+<Position dataItemId="zpm" timestamp="2023-03-13T17:07:58.850305Z" name="Zabs" sequence="2209038" subType="ACTUAL">-38.3265</Position>
+<Position dataItemId="zpm" timestamp="2023-03-13T17:08:00.303427Z" name="Zabs" sequence="2209049" subType="ACTUAL">-38.49925</Position>
+<Position dataItemId="zpm" timestamp="2023-03-13T17:08:01.756556Z" name="Zabs" sequence="2209060" subType="ACTUAL">-38.69005</Position>
+<Position dataItemId="zpm" timestamp="2023-03-13T17:08:03.209702Z" name="Zabs" sequence="2209070" subType="ACTUAL">-38.8808</Position>
+<Position dataItemId="zpm" timestamp="2023-03-13T17:08:04.662803Z" name="Zabs" sequence="2209081" subType="ACTUAL">-39.05355</Position>
+<Position dataItemId="zpm" timestamp="2023-03-13T17:08:06.100308Z" name="Zabs" sequence="2209092" subType="ACTUAL">-39.2407</Position>
+<Position dataItemId="zpm" timestamp="2023-03-13T17:08:07.553434Z" name="Zabs" sequence="2209102" subType="ACTUAL">-39.43145</Position>
+<Position dataItemId="zpm" timestamp="2023-03-13T17:08:09.006563Z" name="Zabs" sequence="2209112" subType="ACTUAL">-39.60425</Position>
+<Position dataItemId="zpm" timestamp="2023-03-13T17:08:10.459680Z" name="Zabs" sequence="2209123" subType="ACTUAL">-39.795</Position>
+<Position dataItemId="zpw" timestamp="2023-03-13T17:07:58.850305Z" name="Zpos" sequence="2209039" subType="ACTUAL">-257.1401</Position>
+<Position dataItemId="zpw" timestamp="2023-03-13T17:08:00.303427Z" name="Zpos" sequence="2209050" subType="ACTUAL">-257.31285</Position>
+<Position dataItemId="zpw" timestamp="2023-03-13T17:08:01.756556Z" name="Zpos" sequence="2209061" subType="ACTUAL">-257.50365</Position>
+<Position dataItemId="zpw" timestamp="2023-03-13T17:08:03.209702Z" name="Zpos" sequence="2209071" subType="ACTUAL">-257.6944</Position>
+<Position dataItemId="zpw" timestamp="2023-03-13T17:08:04.662803Z" name="Zpos" sequence="2209082" subType="ACTUAL">-257.86715</Position>
+<Position dataItemId="zpw" timestamp="2023-03-13T17:08:06.100308Z" name="Zpos" sequence="2209093" subType="ACTUAL">-258.0543</Position>
+<Position dataItemId="zpw" timestamp="2023-03-13T17:08:07.553434Z" name="Zpos" sequence="2209103" subType="ACTUAL">-258.24505</Position>
+<Position dataItemId="zpw" timestamp="2023-03-13T17:08:09.006563Z" name="Zpos" sequence="2209113" subType="ACTUAL">-258.41785</Position>
+<Position dataItemId="zpw" timestamp="2023-03-13T17:08:10.459680Z" name="Zpos" sequence="2209124" subType="ACTUAL">-258.6086</Position>
+</Samples>
+</ComponentStream>
+</DeviceStream>
+</Streams>
+</MTConnectStreams>

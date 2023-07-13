@@ -1,0 +1,239 @@
+{% extends 'dashboard_app_main/base.html' %}
+{% block title_block %}
+Dashboard
+{% endblock %}
+{% block body_block %}
+{{ block.super }}
+<div>{{accumulated.value}}</div>
+<div style="position:relative; margin-left:350px">
+    <div id='log'></div>
+{% comment %} <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"> {% endcomment %}
+</script>
+<div><h2>Response Time {{response}} ms</h2></div>
+<div><a href="{% url 'dashboard_app_main:download_csv_time' %}" class="btn btn-primary">Download CSV</a></div>
+<canvas id="myChart" style="width:100%;max-width:700px; float:left"></canvas>
+
+<canvas id="myChart2" style="width:100%;max-width:700px"></canvas>
+<canvas id="myChart3" style="width:100%;max-width:700px; float:left"></canvas>
+<canvas id="myChart4" style="width:100%;max-width:700px"></canvas>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    var accumulatedData = JSON.parse('{{ accumulated | safe }}');
+    var axisData = JSON.parse('{{ axis | safe }}');
+    var positionData = JSON.parse('{{ position | safe }}');
+    
+    // Prepare data for Chart.js
+    var accumulatedLabels = accumulatedData.map(item => item.timestamp);
+    var accumulatedValues = accumulatedData.map(item => item.value);
+
+    // Create the line charts using Chart.js
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: accumulatedLabels,
+            datasets: [
+                {
+                    label: 'Accumulated Time',
+                    data: accumulatedValues,
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                    fill: false
+                },
+                
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Accumulated Time'
+                }
+            },
+            scales: {
+                x: {
+                    display: true,
+                    title: {
+                        display: true,
+                        text: 'Timestamp'
+                    }
+                },
+                y: {
+                    display: true,
+                    title: {
+                        display: true,
+                        text: 'Value'
+                    }
+                }
+            
+            }
+        }
+    });
+    var cty = document.getElementById('myChart2').getContext('2d');
+    
+        var axisLabels = axisData.filter(item => item.component_name === 'X').map(item => item.timestamp);
+        var axisValues = axisData.filter(item => item.component_name === 'X').map(item => item.value);
+        var axisLabelsY = axisData.filter(item => item.component_name === 'Y').map(item => item.timestamp);
+        var axisValuesY = axisData.filter(item => item.component_name === 'Y').map(item => item.value);
+        var axisLabelsZ = axisData.filter(item => item.component_name === 'Z').map(item => item.timestamp);
+        var axisValuesZ = axisData.filter(item => item.component_name === 'Z').map(item => item.value);
+    var chart = new Chart(cty, {
+        type: 'line',
+        data: {
+            labels: axisLabels,
+            datasets: [
+                {
+                    label: 'Axis Feedrate X',
+                    data: axisValues,
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    fill: false
+                },
+                {
+                    label: 'Axis Feedrate Y',
+                    data: axisvaluesY,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                    fill: false
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'X component'
+                }
+            },
+            scales: {
+                x: {
+                    display: true,
+                    title: {
+                        display: true,
+                        text: 'Timestamp'
+                    }
+                },
+                y: {
+                    display: true,
+                    title: {
+                        display: true,
+                        text: 'Value'
+                    }
+                }
+            }
+        }
+    });
+
+    var cty = document.getElementById('myChart3').getContext('2d');
+    
+        var axisLabels = axisData.filter(item => item.component_name === 'Y').map(item => item.timestamp);
+        var axisValues = axisData.filter(item => item.component_name === 'Y').map(item => item.value);
+    
+        var positionLabels = positionData.filter(item => item.component_name === 'Y').map(item => item.timestamp);
+        var positionValues = positionData.filter(item => item.component_name === 'Y').map(item => item.value);
+    var chart = new Chart(cty, {
+        type: 'line',
+        data: {
+            labels: axisLabels,
+            datasets: [
+                {
+                    label: 'Axis Feedrate',
+                    data: axisValues,
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    fill: false
+                },
+                {
+                    label: 'Position',
+                    data: positionValues,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                    fill: false
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Y component'
+                }
+            },
+            scales: {
+                x: {
+                    display: true,
+                    title: {
+                        display: true,
+                        text: 'Timestamp'
+                    }
+                },
+                y: {
+                    display: true,
+                    title: {
+                        display: true,
+                        text: 'Value'
+                    }
+                }
+            }
+        }
+    });
+    var cty = document.getElementById('myChart4').getContext('2d');
+    
+        var axisLabels = axisData.filter(item => item.component_name === 'Z').map(item => item.timestamp);
+        var axisValues = axisData.filter(item => item.component_name === 'Z').map(item => item.value);
+    
+        var positionLabels = positionData.filter(item => item.component_name === 'Z').map(item => item.timestamp);
+        var positionValues = positionData.filter(item => item.component_name === 'Z').map(item => item.value);
+    var chart = new Chart(cty, {
+        type: 'line',
+        data: {
+            labels: positionLabels,
+            datasets: [
+                {
+                    label: 'Axis Feedrate',
+                    data: axisValues,
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    fill: false
+                },
+                {
+                    label: 'Position',
+                    data: positionValues,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                    fill: false
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Z component'
+                }
+            },
+            scales: {
+                x: {
+                    display: true,
+                    title: {
+                        display: true,
+                        text: 'Timestamp'
+                    }
+                },
+                y: {
+                    display: true,
+                    title: {
+                        display: true,
+                        text: 'Value'
+                    }
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}

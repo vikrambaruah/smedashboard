@@ -1,0 +1,19 @@
+{% extends 'dashboard_app_main/base.html' %}
+{% block title_block %}
+Login
+{% endblock %}
+{% block body_block %}
+<h1 class="title-text text-center mt-5">Login to Dashboard</h1>
+<div class="title-text text-center mt-5" style="position:absolute;margin-left:750px">
+    <form id="login_form" method="post" action="{% url 'dashboard_app_main:login' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-4">
+            <label for="inputUsername" class="form-label">Username</label>
+            <input class="form-control mb-3" id="inputUsername" type="text" name="username" value="" size="50" />
+            <label for="inputPassword" class="form-label ">Password</label>
+            <input class="form-control" id="inputPassword" type="password" name="password" value="" size="50" />
+        </div>
+        <input style="width: 150px;" class="btn btn-dark" type="submit" value="login" />
+    </form>
+</div>
+{% endblock %}
