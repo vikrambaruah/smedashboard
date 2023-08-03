@@ -1,0 +1,113 @@
+{% extends 'dashboard_app_main/base.html' %}
+{% block title_block %}
+Dashboard
+{% endblock %}
+{% block body_block %}
+{{ block.super }}
+
+{% comment %} <div class="chart-info">
+    <div class="chart-info-item">
+        <h3>Response Time</h3>
+        <p>{{ response }} ms</p>
+    </div>
+    <div class="chart-info-item">
+        <h3>Download Data</h3>
+        <a href="{% url 'dashboard_app_main:download_csv_position' %}" class="btn btn-primary">Download CSV</a>
+    </div>
+</div> {% endcomment %}
+<div class="chart-info">
+    <div class="chart-info-item">
+        <h3>Response Time</h3>
+        <p>{{ response }} ms</p>
+    </div>
+    <div class="chart-info-item">
+        <h3>Device Name</h3>
+        <p>{{ device }}</p>
+    </div>
+    <div class="chart-info-item">
+        <h3>Device State</h3>
+        <p>{{ device_state }}</p>
+    </div>
+    
+</div>
+
+<div style="margin-top: 20px; text-align: center;">
+    <button id="btn-accumulated" class="btn btn-primary" onclick="showChart('X')">Show Accumulated Time</button>
+    <button id="btn-axis" class="btn btn-primary" onclick="showChart('Y')">Show Axis Feedrate</button>
+    <button id="btn-position" class="btn btn-primary" onclick="showChart('Z')">Show Position</button>
+</div>
+
+<div class="table-container">
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Component</th>
+                <th>Component Name</th>
+                <th>Component ID</th>
+                <th>Timestamp</th>
+                <th>Name</th>
+                <th>Sequence</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody id="table-body">
+            <!-- Table data will be dynamically populated here -->
+        </tbody>
+    </table>
+</div>
+<script>
+    var tableData = JSON.parse('{{ accumulated | safe }}');
+    var tableHtml = '';
+
+    tableData.forEach(function(item) {
+        tableHtml += '<tr>';
+        tableHtml += '<td>' + item.component + '</td>';
+        tableHtml += '<td>' + item.component_name + '</td>';
+        tableHtml += '<td>' + item.component_id + '</td>';
+        tableHtml += '<td>' + item.timestamp + '</td>';
+        tableHtml += '<td>' + item.name + '</td>';
+        tableHtml += '<td>' + item.sequence + '</td>';
+        tableHtml += '<td>' + item.value + '</td>';
+        tableHtml += '</tr>';
+    });
+
+    document.getElementById('table-body').innerHTML = tableHtml;
+
+    // Button click event listeners
+    document.getElementById('btn-accumulated').addEventListener('click', function() {
+        // Display accumulated time data
+        tableData = JSON.parse('{{ accumulated | safe }}');
+        updateTable(tableData);
+    });
+
+    document.getElementById('btn-axis').addEventListener('click', function() {
+        // Display axis feedrate data
+        tableData = JSON.parse('{{ axis | safe }}');
+        updateTable(tableData);
+    });
+
+    document.getElementById('btn-position').addEventListener('click', function() {
+        // Display position data
+        tableData = JSON.parse('{{ position | safe }}');
+        updateTable(tableData);
+    });
+
+    function updateTable(data) {
+        var tableHtml = '';
+
+        data.forEach(function(item) {
+            tableHtml += '<tr>';
+            tableHtml += '<td>' + item.component + '</td>';
+            tableHtml += '<td>' + item.component_name + '</td>';
+            tableHtml += '<td>' + item.component_id + '</td>';
+            tableHtml += '<td>' + item.timestamp + '</td>';
+            tableHtml += '<td>' + item.name + '</td>';
+            tableHtml += '<td>' + item.sequence + '</td>';
+            tableHtml += '<td>' + item.value + '</td>';
+            tableHtml += '</tr>';
+        });
+
+        document.getElementById('table-body').innerHTML = tableHtml;
+    }
+</script>
+{% endblock %}

@@ -35,7 +35,6 @@ transition:width .05s linear;
 -webkit-transform:translateZ(0) scale(1,1);
 z-index:1000;
 }
-
 .main-menu>ul {
 margin:7px 0;
 }
@@ -121,9 +120,81 @@ background: #e2e2e2;
 width: 100%;
 height: 100%;
 }
+
 @font-face {
   font-family: 'Titillium Web';
   font-style: normal;
   font-weight: 300;
   src: local('Titillium WebLight'), local('TitilliumWeb-Light'), url(http://themes.googleusercontent.com/static/fonts/titilliumweb/v2/anMUvcNT0H1YN4FII8wpr24bNCNEoFTpS2BTjF6FB5E.woff) format('woff');
+}
+.chart-container {
+  display: flex;
+  justify-content: center; /* Center the content horizontally */
+  align-items: center; /* Center the content vertically */
+  height: 80vh; /* Adjust the height of the chart container */
+}
+
+/* Styling for each individual chart item */
+.chart-item {
+  width: 100%;
+  max-width: 900px; /* Increase the maximum width of the chart */
+  height: 500px; /* Increase the height of the chart */
+  margin-bottom: 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Styling for chart titles */
+.chart-item h2 {
+  margin-top: 0;
+  font-size: 18px;
+}
+
+/* Make the charts responsive */
+canvas {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Additional styling to make the charts more visually appealing */
+.chart-item {
+  transition: box-shadow 0.3s ease;
+}
+
+.chart-item:hover {
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.chart-info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.chart-info-item {
+  text-align: center;
+  margin: 0 20px;
+}
+
+.chart-info-item h3 {
+  font-size: 18px;
+}
+
+.chart-info-item p {
+  margin: 5px 0;
+}
+
+.chart-info-item a {
+  display: block;
+  margin-top: 10px;
+}
+
+.table-container {
+  width: 80%;
+  margin: 20px auto;
+  padding-left: 250px; /* Width of the sidebar */
 }

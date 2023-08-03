@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from dashboard_app_main.forms import UserForm
 import requests
 import xml.etree.ElementTree as ET
-from .models import AccumulatedTime, AxisFeedrate, Position, User
+from .models import AccumulatedTime, AxisFeedrate,AxisFeedrate2, Position, User, Temperature
 import json
 import time
 import big_o
@@ -337,7 +337,104 @@ class LogoutView(View):
     def get(self,request):
         logout(request)
         return redirect(reverse('dashboard_app_main:index'))
+class DashboardData(View):
+    def get(self,request):
+        start_time=time.time()
+        context_dict ={}
+        url = "http://mtconnect.mazakcorp.com:5609/sample"
+        response = requests.get(url)
+        xml_data = response.content
 
+        
+        response_time=(time.time() - start_time)*1000
+        root = ET.fromstring(xml_data)
+        AccumulatedTime.objects.all().delete()
+        AxisFeedrate.objects.all().delete()
+        Position.objects.all().delete()
+        
+        for c in root.iter('*'):
+            if (c.tag=="{urn:mtconnect.org:MTConnectStreams:1.3}DeviceStream"):
+                device_name=c.attrib["name"]
+            if (c.tag=="{urn:mtconnect.org:MTConnectStreams:1.3}ComponentStream"):
+
+                component_name=c.attrib["name"]
+                component=c.attrib["component"]
+                component_id=c.attrib["componentId"]
+                for child in c.iter('*'): 
+                    if(child.tag=="{urn:mtconnect.org:MTConnectStreams:1.3}AccumulatedTime"):
+                        atime=AccumulatedTime()
+                        atime.component=component
+                        atime.component_id=component_id
+                        atime.component_name=component_name
+                        atime.component=child.attrib["name"]
+                        atime.timestamp=child.attrib["timestamp"]
+                        atime.name = child.attrib["name"]
+                        atime.sequence = child.attrib["sequence"]
+                        atime.subType = child.attrib["subType"]
+                        atime.value = int(child.text)
+                        atime.save()
+                    if(child.tag=="{urn:mtconnect.org:MTConnectStreams:1.3}AxisFeedrate"):
+                        ax=AxisFeedrate()
+                        ax.component=component
+                        ax.component_id=component_id
+                        ax.component_name=component_name
+                        ax.timestamp=child.attrib["timestamp"]
+                        ax.name = child.attrib["name"]
+                        ax.sequence = child.attrib["sequence"]
+                        ax.value = float(child.text)
+                        ax.save()
+                    if(child.tag=="{urn:mtconnect.org:MTConnectStreams:1.3}Position"):
+                        pos=Position()
+                        pos.component=component
+                        pos.component_id=component_id
+                        pos.component_name=component_name
+                        pos.timestamp=child.attrib["timestamp"]
+                        pos.name = child.attrib["name"]
+                        pos.sequence = child.attrib["sequence"]
+                        pos.subType = child.attrib["subType"]
+                        pos.value = float(child.text)
+                        pos.save()
+        accumulated = json.dumps([
+            {
+                'timestamp': item.timestamp.isoformat(),
+                'value': item.value,
+                'component':item.component,
+                'component_name':item.component_name,
+                'component_id':item.component_id,
+                'name':item.name,
+                'sequence':item.sequence,
+            }
+            for item in AccumulatedTime.objects.all()
+        ])
+
+        axis = json.dumps([
+            {
+                'timestamp': item.timestamp.isoformat(),
+                'value': item.value,
+                'component':item.component,
+                'component_name':item.component_name,
+                'component_id':item.component_id,
+                'name':item.name,
+                'sequence':item.sequence
+                
+            }
+            for item in AxisFeedrate.objects.all()
+        ])
+
+        position = json.dumps([
+            {
+                'timestamp': item.timestamp.isoformat(),
+                'value': item.value,
+                'component':item.component,
+                'component_name':item.component_name,
+                'component_id':item.component_id,
+                'name':item.name,
+                'sequence':item.sequence
+            }
+            for item in Position.objects.all()
+        ])
+
+        return render(request, 'dashboard_app_main/dashboardtest.html', context={'accumulated': accumulated, 'axis': axis, 'position': position,'response':response_time,'device':device_name})
 class Dashboard(View):
     @method_decorator(login_required)
     def get(self,request):
@@ -372,27 +469,6 @@ class Dashboard(View):
                         atime.subType = child.attrib["subType"]
                         atime.value = int(child.text)
                         atime.save()
-                    if(child.tag=="{urn:mtconnect.org:MTConnectStreams:1.3}AxisFeedrate"):
-                        ax=AxisFeedrate()
-                        ax.component=component
-                        ax.component_id=component_id
-                        ax.component_name=component_name
-                        ax.timestamp=child.attrib["timestamp"]
-                        ax.name = child.attrib["name"]
-                        ax.sequence = child.attrib["sequence"]
-                        ax.value = float(child.text)
-                        ax.save()
-                    if(child.tag=="{urn:mtconnect.org:MTConnectStreams:1.3}Position"):
-                        pos=Position()
-                        pos.component=component
-                        pos.component_id=component_id
-                        pos.component_name=component_name
-                        pos.timestamp=child.attrib["timestamp"]
-                        pos.name = child.attrib["name"]
-                        pos.sequence = child.attrib["sequence"]
-                        pos.subType = child.attrib["subType"]
-                        pos.value = float(child.text)
-                        pos.save()
         accumulated = json.dumps([
             {
                 'timestamp': item.timestamp.isoformat(),
@@ -401,27 +477,9 @@ class Dashboard(View):
             for item in AccumulatedTime.objects.all()
         ])
 
-        axis = json.dumps([
-            {
-                'component_name':item.component_name,
-                'timestamp': item.timestamp.isoformat(),
-                'value': item.value
-            }
-            for item in AxisFeedrate.objects.all()
-        ])
-
-        position = json.dumps([
-            {
-                'component_name':item.component_name,
-                'timestamp': item.timestamp.isoformat(),
-                'value': item.value
-            }
-            for item in Position.objects.all()
-        ])
-        
 
         
-        return render(request, 'dashboard_app_main/dashboard.html', context={'accumulated': accumulated, 'axis': axis, 'position': position,'response':response_time})
+        return render(request, 'dashboard_app_main/dashboard.html', context={'accumulated': accumulated,'response':response_time})
         #return render (request, 'dashboard_app_main/dashboard.html', context={'accumulated':AccumulatedTime.objects.all(),'axis':AxisFeedrate.objects.all(),'position':Position.objects.all()})
         
 
@@ -446,18 +504,6 @@ class DashboardAxis(View):
                 component=c.attrib["component"]
                 component_id=c.attrib["componentId"]
                 for child in c.iter('*'): 
-                    if(child.tag=="{urn:mtconnect.org:MTConnectStreams:1.3}AccumulatedTime"):
-                        atime=AccumulatedTime()
-                        atime.component=component
-                        atime.component_id=component_id
-                        atime.component_name=component_name
-                        atime.component=child.attrib["name"]
-                        atime.timestamp=child.attrib["timestamp"]
-                        atime.name = child.attrib["name"]
-                        atime.sequence = child.attrib["sequence"]
-                        atime.subType = child.attrib["subType"]
-                        atime.value = int(child.text)
-                        atime.save()
                     if(child.tag=="{urn:mtconnect.org:MTConnectStreams:1.3}AxisFeedrate"):
                         ax=AxisFeedrate()
                         ax.component=component
@@ -468,44 +514,20 @@ class DashboardAxis(View):
                         ax.sequence = child.attrib["sequence"]
                         ax.value = float(child.text)
                         ax.save()
-                    if(child.tag=="{urn:mtconnect.org:MTConnectStreams:1.3}Position"):
-                        pos=Position()
-                        pos.component=component
-                        pos.component_id=component_id
-                        pos.component_name=component_name
-                        pos.timestamp=child.attrib["timestamp"]
-                        pos.name = child.attrib["name"]
-                        pos.sequence = child.attrib["sequence"]
-                        pos.subType = child.attrib["subType"]
-                        pos.value = float(child.text)
-                        pos.save()
-        accumulated = json.dumps([
-            {
-                'timestamp': item.timestamp.isoformat(),
-                'value': item.value
-            }
-            for item in AccumulatedTime.objects.all()
-        ])
-
         axis = json.dumps([
             {
-                'component_name':item.component_name,
                 'timestamp': item.timestamp.isoformat(),
-                'value': item.value
+                'value': item.value,
+                'component':item.component,
+                'component_name':item.component_name,
+                'component_id':item.component_id,
+                'name':item.name,
+                'sequence':item.sequence
+                
             }
             for item in AxisFeedrate.objects.all()
         ])
-
-        position = json.dumps([
-            {
-                'component_name':item.component_name,
-                'timestamp': item.timestamp.isoformat(),
-                'value': item.value
-            }
-            for item in Position.objects.all()
-        ])
-
-        return render(request, 'dashboard_app_main/dashboardaxis.html', context={'accumulated': accumulated, 'axis': axis, 'position': position,'response':response_time})
+        return render(request, 'dashboard_app_main/dashboardaxis.html', context={'axis': axis,'response':response_time})
     
 class DashboardPosition(View):
     def get(self,request):
@@ -528,28 +550,6 @@ class DashboardPosition(View):
                 component=c.attrib["component"]
                 component_id=c.attrib["componentId"]
                 for child in c.iter('*'): 
-                    if(child.tag=="{urn:mtconnect.org:MTConnectStreams:1.3}AccumulatedTime"):
-                        atime=AccumulatedTime()
-                        atime.component=component
-                        atime.component_id=component_id
-                        atime.component_name=component_name
-                        atime.component=child.attrib["name"]
-                        atime.timestamp=child.attrib["timestamp"]
-                        atime.name = child.attrib["name"]
-                        atime.sequence = child.attrib["sequence"]
-                        atime.subType = child.attrib["subType"]
-                        atime.value = int(child.text)
-                        atime.save()
-                    if(child.tag=="{urn:mtconnect.org:MTConnectStreams:1.3}AxisFeedrate"):
-                        ax=AxisFeedrate()
-                        ax.component=component
-                        ax.component_id=component_id
-                        ax.component_name=component_name
-                        ax.timestamp=child.attrib["timestamp"]
-                        ax.name = child.attrib["name"]
-                        ax.sequence = child.attrib["sequence"]
-                        ax.value = float(child.text)
-                        ax.save()
                     if(child.tag=="{urn:mtconnect.org:MTConnectStreams:1.3}Position"):
                         pos=Position()
                         pos.component=component
@@ -561,24 +561,7 @@ class DashboardPosition(View):
                         pos.subType = child.attrib["subType"]
                         pos.value = float(child.text)
                         pos.save()
-        accumulated = json.dumps([
-            {
-                'timestamp': item.timestamp.isoformat(),
-                'value': item.value
-            }
-            for item in AccumulatedTime.objects.all()
-        ])
-        # sorted_accumulated = sorted(accumulated,key=lambda x: x['timestamp'])
-        # sorted_accumulated_json = json.dumps(sorted_accumulated)
-        axis = json.dumps([
-            {
-                'component_name':item.component_name,
-                'timestamp': item.timestamp.isoformat(),
-                'value': item.value
-            }
-            for item in AxisFeedrate.objects.all()
-        ])
-
+       
         position = json.dumps([
             {
                 'component_name':item.component_name,
@@ -588,4 +571,161 @@ class DashboardPosition(View):
             for item in Position.objects.all()
         ])
 
-        return render(request, 'dashboard_app_main/dashboardposition.html', context={'accumulated': accumulated, 'axis': axis, 'position': position,'response':response_time})
+        return render(request, 'dashboard_app_main/dashboardposition.html', context={'position': position,'response':response_time})
+
+class DashboardTemperature(View):
+    def get(self,request):
+        start_time=time.time()
+        context_dict ={}
+        url = "http://mtconnect.mazakcorp.com:5611/sample"
+        response = requests.get(url)
+        xml_data = response.content
+
+        
+        response_time=(time.time() - start_time)*1000
+        root = ET.fromstring(xml_data)
+        # AccumulatedTime.objects.all().delete()
+        # AxisFeedrate.objects.all().delete()
+        # Position.objects.all().delete()
+        device_state="on"
+        for c in root.iter('*'):
+            if (c.tag=="{urn:mtconnect.org:MTConnectStreams:1.4}DeviceStream"):
+                device_name=c.attrib["name"]
+            if (c.tag=="{urn:mtconnect.org:MTConnectStreams:1.4}ComponentStream" and c.attrib["component"]=="Device"):
+                for child in c.iter('*'): 
+                    if(child.tag=="{urn:mtconnect.org:MTConnectStreams:1.4}EquipmentMode"):
+                        device_state=str(child.text)
+                        print(device_state)
+            if (c.tag=="{urn:mtconnect.org:MTConnectStreams:1.4}ComponentStream" and c.attrib["component"]=="Rotary"):
+                for child in c.iter('*'): 
+                    if(child.tag=="{urn:mtconnect.org:MTConnectStreams:1.4}Temperature"):
+                        temp=Temperature()
+                        temp.timestamp=child.attrib["timestamp"]
+                        temp.sequence=child.attrib["sequence"]
+                        #temp.dataItemId=child.attrib["dataItemId"]
+                        temp.composition_id=child.attrib["compositionId"]
+                        temp.value=float(child.text)
+                        temp.save()
+      
+
+        temperature = json.dumps([
+            {
+                'timestamp': item.timestamp.isoformat(),
+                'value': item.value,
+                'composition_id':item.composition_id,
+                #'dataItemId':item.dataItemId,
+                'sequence':item.sequence,
+            }
+            for item in Temperature.objects.all()
+        ])
+
+        
+
+        return render(request, 'dashboard_app_main/dashboardtemperature.html', context={'temperature': temperature,'response':response_time,'device_state':device_state,'device_name':device_name})
+  
+class DashboardAxis2(View):
+    def get(self,request):
+        start_time=time.time()
+        context_dict ={}
+        url = "http://mtconnect.mazakcorp.com:5611/sample"
+        response = requests.get(url)
+        xml_data = response.content
+
+        
+        response_time=(time.time() - start_time)*1000
+        root = ET.fromstring(xml_data)
+        # AccumulatedTime.objects.all().delete()
+        # AxisFeedrate.objects.all().delete()
+        # Position.objects.all().delete()
+        device_state="on"
+        for c in root.iter('*'):
+            if (c.tag=="{urn:mtconnect.org:MTConnectStreams:1.4}DeviceStream"):
+                device_name=c.attrib["name"]
+            if (c.tag=="{urn:mtconnect.org:MTConnectStreams:1.4}ComponentStream" and c.attrib["component"]=="Device"):
+                for child in c.iter('*'): 
+                    if(child.tag=="{urn:mtconnect.org:MTConnectStreams:1.4}EquipmentMode"):
+                        device_state=str(child.text)
+                        print(device_state)
+            if (c.tag=="{urn:mtconnect.org:MTConnectStreams:1.4}ComponentStream" and c.attrib["component"]=="Linear"):
+
+                component_name=c.attrib["name"]
+                component=c.attrib["component"]
+                component_id=c.attrib["componentId"]
+                for child in c.iter('*'): 
+                    if(child.tag=="{urn:mtconnect.org:MTConnectStreams:1.4}AxisFeedrate"):
+                        ax=AxisFeedrate2()
+                        ax.component=component
+                        ax.component_id=component_id
+                        ax.component_name=component_name
+                        ax.timestamp=child.attrib["timestamp"]
+                        ax.dataItemId=child.attrib["dataItemId"]
+                        ax.sequence = child.attrib["sequence"]
+                        ax.value = float(child.text)
+                        ax.save()    
+      
+
+        axis = json.dumps([
+            {
+                'timestamp': item.timestamp.isoformat(),
+                'value': item.value,
+                'component':item.component,
+                'component_name':item.component_name,
+                'component_id':item.component_id,
+                'sequence':item.sequence,
+            }
+            for item in AxisFeedrate2.objects.all()
+        ])
+
+        
+
+        return render(request, 'dashboard_app_main/dashboardaxis.html', context={'axis': axis,'response':response_time,'device_state':device_state,'device_name':device_name})
+    
+class DownloadCSV2(View):
+    def get(self, request):
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="data.csv"'
+        context_dict ={}
+        url = "http://mtconnect.mazakcorp.com:5611/sample"
+        response = requests.get(url)
+        xml_data = response.content
+        
+        root = ET.fromstring(xml_data)
+        for c in root.iter('*'):
+            if (c.tag=="{urn:mtconnect.org:MTConnectStreams:1.4}ComponentStream" and c.attrib["component"]=="Linear"):
+                component_name=c.attrib["name"]
+                component=c.attrib["component"]
+                component_id=c.attrib["componentId"]
+                for child in c.iter('*'): 
+                    if(child.tag=="{urn:mtconnect.org:MTConnectStreams:1.4}AxisFeedrate"):
+                        ax=AxisFeedrate2()
+                        ax.component=component
+                        ax.component_id=component_id
+                        ax.component_name=component_name
+                        ax.timestamp=child.attrib["timestamp"]
+                        ax.sequence = child.attrib["sequence"]
+                        ax.value = float(child.text)
+                        ax.save()
+        
+        # Fetch data from the database
+        data = AxisFeedrate2.objects.all()
+
+        # Create a CSV writer
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="data.csv"'
+
+        # Create a CSV writer
+        writer = csv.writer(response)
+        writer.writerow(['Component', 'Component Name', 'Component ID', 'Timestamp', 'Sequence', 'Value'])
+
+        # Write data rows to the CSV
+        for item in data:
+            writer.writerow([
+                item.component,
+                item.component_name,
+                item.component_id,
+                item.timestamp,
+                item.sequence,
+                item.value,
+            ])
+
+        return response

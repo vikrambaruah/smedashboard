@@ -22,7 +22,15 @@ class AccumulatedTime(models.Model):
         super(AccumulatedTime,self).save(*args,**kwargs)
     def __str__(self):
         return self.name
-
+class Temperature(models.Model):
+    composition_id = models.CharField(max_length=100,blank=True)
+    timestamp = models.DateTimeField(blank=True)
+    sequence = models.IntegerField(blank=True)
+    value = models.FloatField(blank=True)
+    def save(self, *args, **kwargs):
+        super(Temperature,self).save(*args,**kwargs)
+    def __str__(self):
+        return self.name
 
 class AxisFeedrate(models.Model):
     component=models.CharField(max_length=100,blank=True,default=None)
@@ -36,7 +44,18 @@ class AxisFeedrate(models.Model):
         super(AxisFeedrate,self).save(*args,**kwargs)
     def __str__(self):
         return self.name
-
+class AxisFeedrate2(models.Model):
+    component=models.CharField(max_length=100,blank=True,default=None)
+    component_name=models.CharField(max_length=100,blank=True)
+    component_id=models.CharField(max_length=100,blank=True)
+    timestamp = models.DateTimeField(blank=True)
+    dataItemId = models.CharField(max_length=100,blank=True)
+    sequence = models.IntegerField(blank=True)
+    value = models.FloatField(blank=True)
+    def save(self, *args, **kwargs):
+        super(AxisFeedrate2,self).save(*args,**kwargs)
+    def __str__(self):
+        return self.name
 
 class Position(models.Model):
     component=models.CharField(max_length=100,blank=True,default=None)

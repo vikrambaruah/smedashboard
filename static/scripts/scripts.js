@@ -1,93 +1,27 @@
-const xValues = [100,200,300,400,500,600,700,800,900,1000];
+const data = [
+  { component: "Comp1", component_name: "CompName1", timestamp: "2023-07-25 12:00:00", name: "Name1", value: 10 },
+  { component: "Comp2", component_name: "CompName2", timestamp: "2023-07-25 13:00:00", name: "Name2", value: 20 },
+  { component: "Comp3", component_name: "CompName3", timestamp: "2023-07-25 14:00:00", name: "Name3", value: 30 },
+];
 
-new Chart("myChart", {
-  type: "line",
-  data: {
-    labels: xValues,
-    datasets: [{
-      data: [860,1140,1060,1060,1070,1110,1330,2210,7830,2478],
-      borderColor: "red",
-      fill: false
-    },{
-      data: [1600,1700,1700,1900,2000,2700,4000,5000,6000,7000],
-      borderColor: "green",
-      fill: false
-    },{
-      data: [300,700,2000,5000,6000,4000,2000,1000,200,100],
-      borderColor: "blue",
-      fill: false
-    }]
-  },
-  options: {
-    legend: {display: false}
-  }
-});
-// import fs from 'fs';
-// import { XMLParser} from 'fast-xml-parser';
-// import xml2js from 'xml2js';
-// import xl from 'excel4node';
-// function fetchData(){
+const tableBody = document.getElementById("tableBody");
 
-//     fetch("http://mtconnect.mazakcorp.com:5609/sample")
-//     .then(response=>response.text())
-//     .then(data=>{
-//         const wb = new xl.Workbook();
-//         const ws = wb.addWorksheet('MTConnect');
-//         //let parser=new XMLParser();
-//         var parser = new xml2js.Parser({explicitArray: false});
-//         //let xml=parser.parseString(data);
-//         parser.parseString(data, function (err, result) {
-//             if (err) {
-//                 console.error('xml2js.parseString: Error occurred: ', err);
-//             } else {
-//                 // for (let key in Object.keys(result.MTConnectStreams.Streams.DeviceStream.ComponentStream)){
-//                 //     console.log(result.MTConnectStreams.Streams.DeviceStream.ComponentStream[key]);
-                    
-//                 // }
-//                 //console.log(JSON.stringify(result, null, 2));
-//                 for (let k=0; k<Object.values(result.MTConnectStreams.Streams.DeviceStream.ComponentStream).length;k++){
-//                 //console.log(Object.values(result.MTConnectStreams.Streams.DeviceStream.ComponentStream[k])[0]['name']);
-//                 for (let i=1;i<Object.values(result.MTConnectStreams.Streams.DeviceStream.ComponentStream[k]).length;i++){
-//                     for (let j in Object.values(result.MTConnectStreams.Streams.DeviceStream.ComponentStream[1])[i]){
-//                         console.log(Object.values(result.MTConnectStreams.Streams.DeviceStream.ComponentStream[1])[j]['_']);
+// Function to populate the table with data
+function populateTable() {
+  let html = "";
+  data.forEach(item => {
+    html += `
+      <tr>
+        <td>${item.component}</td>
+        <td>${item.component_name}</td>
+        <td>${item.timestamp}</td>
+        <td>${item.name}</td>
+        <td>${item.value}</td>
+      </tr>
+    `;
+  });
+  tableBody.innerHTML = html;
+}
 
-//                     }
-//                 }
-//                 }
-                
-//             }
-//         });
-//         // const content=[];
-//         // // try {
-//         // //     fs.writeFileSync('test.txt', JSON.stringify(xml.MTConnectStreams.Streams.DeviceStream.ComponentStream[0]));
-//         // // } catch (err) {
-//         // //     console.error(err);
-//         // // }
-//         // console.log(xml.MTConnectStreams.Streams.DeviceStream.ComponentStream[0].getAttribute('name'));
-//         // for (let i=0;i<xml.MTConnectStreams.Streams.DeviceStream.ComponentStream.length;i++){
-//         // //document.getElementById('output').innerHTML=data;
-//         // //const fs = require('fs');
-
-//         //     //console.log(xml.MTConnectStreams.Streams.DeviceStream.ComponentStream[i]);
-//         //     content[i]=JSON.stringify(xml.MTConnectStreams.Streams.DeviceStream.ComponentStream[i]);
-//         //     console.log(content[i]);
-//         //     // fs.appendFile('test.txt', content[i], err => {
-//         //     //     if (err) {
-//         //     //       console.error(err);
-//         //     //     }
-//         //     //   });
-            
-//         //}
-//     })  
-// }
-
-//    fetchData();
-// // function readXML(){
-// //     var xml=new XMLHttpRequest();
-// //     xml.open('GET','mtconnect.xml',false);
-// //     xml.send();
-// //     var xmlData=xml.responseText;
-// //     console.log(xmlData);
-// // }
-// // readXML();
-
+// Call the function to populate the table on page load
+window.onload = populateTable;

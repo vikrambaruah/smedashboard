@@ -4,9 +4,10 @@ Dashboard
 {% endblock %}
 {% block body_block %}
 {{ block.super }}
+
 <div class="chart-container">
     <div class="chart-item">
-        <h2>Axis Feedrate</h2>
+        <h2>{{ device }}</h2>
         <canvas id="myChart"></canvas>
     </div>
 </div>
@@ -18,32 +19,22 @@ Dashboard
     </div>
     <div class="chart-info-item">
         <h3>Download Data</h3>
-        <a href="{% url 'dashboard_app_main:download_csv2' %}" class="btn btn-primary">Download CSV</a>
-    </div>
-    <div class="chart-info-item">
-        <h3>Device State</h3>
-        <p>{{ device_state }}</p>
+        <a href="{% url 'dashboard_app_main:download_csv_time' %}" class="btn btn-primary">Download CSV</a>
     </div>
 </div>
-
-<div style="margin-top: 20px; text-align: center;">
-    <button class="btn btn-primary" onclick="showChart('X')">X Component</button>
-    <button class="btn btn-primary" onclick="showChart('Y')">Y Component</button>
-    <button class="btn btn-primary" onclick="showChart('Z')">Z Component</button>
-</div>
-
 
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    var axisData = JSON.parse('{{ axis | safe }}');
+    var temperature = JSON.parse('{{ temperature | safe }}');
+
+    // Prepare data for Chart.js
+    var tempLabels = temperature.map(item => item.timestamp);
+    var tempValues = temperature.map(item => item.value);
+
+    // Create the line chart using Chart.js
     var ctx = document.getElementById('myChart').getContext('2d');
     var myChart; // Chart.js instance
-    var currentComponent = 'X';
-
-    function filterData(component) {
-        return axisData.filter(item => item.component_name === component);
-    }
 
     function createLineChart(labels, values) {
         if (myChart) {
@@ -56,10 +47,10 @@ Dashboard
                 labels: labels,
                 datasets: [
                     {
-                        label: 'Axis Feedrate',
+                        label: 'Temperature',
                         data: values,
-                        borderColor: 'rgba(54, 162, 235, 1)',
-                        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        backgroundColor: 'rgba(255, 99, 132, 0.5)',
                         fill: false
                     },
                 ]
@@ -69,7 +60,7 @@ Dashboard
                 plugins: {
                     title: {
                         display: true,
-                        text: `Axis Feedrate ${currentComponent} component`
+                        text: 'Temperature'
                     }
                 },
                 scales: {
@@ -92,13 +83,7 @@ Dashboard
         });
     }
 
-    function showChart(component) {
-        currentComponent = component;
-        var filteredData = filterData(component);
-        createLineChart(filteredData.map(item => item.timestamp), filteredData.map(item => item.value));
-    }
-
-    // Initial rendering of the chart for X component
-    showChart('X');
+    // Initial rendering of the chart
+    createLineChart(tempLabels, tempValues);
 </script>
 {% endblock %}

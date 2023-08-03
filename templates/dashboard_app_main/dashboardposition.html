@@ -4,163 +4,97 @@ Dashboard
 {% endblock %}
 {% block body_block %}
 {{ block.super }}
-<div>helloooo </div>
-<div>{{accumulated.value}}</div>
-<div style="position:relative; margin-left:350px">
-    <div id='log'></div>
-{% comment %} <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"> {% endcomment %}
-</script>
+<div class="chart-container">
+    <div class="chart-item">
+        <h2>Position</h2>
+        <canvas id="myChart"></canvas>
+    </div>
+</div>
 
-<div><h2>Response Time {{response}} ms</h2></div>
-<div><a href="{% url 'dashboard_app_main:download_csv_position' %}" class="btn btn-primary">Download CSV</a></div>
-<canvas id="myChart2" style="width:100%;max-width:700px; float:left"></canvas>
-<canvas id="myChart3" style="width:100%;max-width:700px"></canvas>
-<canvas id="myChart4" style="width:100%;max-width:700px"></canvas>
+<div class="chart-info">
+    <div class="chart-info-item">
+        <h3>Response Time</h3>
+        <p>{{ response }} ms</p>
+    </div>
+    <div class="chart-info-item">
+        <h3>Download Data</h3>
+        <a href="{% url 'dashboard_app_main:download_csv_position' %}" class="btn btn-primary">Download CSV</a>
+    </div>
+</div>
+
+<div style="margin-top: 20px; text-align: center;">
+    <button class="btn btn-primary" onclick="showChart('X')">X Component</button>
+    <button class="btn btn-primary" onclick="showChart('Y')">Y Component</button>
+    <button class="btn btn-primary" onclick="showChart('Z')">Z Component</button>
+</div>
+
+
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    var accumulatedData = JSON.parse('{{ accumulated | safe }}');
-    var axisData = JSON.parse('{{ axis | safe }}');
     var positionData = JSON.parse('{{ position | safe }}');
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myChart; // Chart.js instance
+    var currentComponent = 'X';
 
-    // Prepare data for Chart.js
+    function filterData(component) {
+        return positionData.filter(item => item.component_name === component);
+    }
 
-    // Create the line charts using Chart.js
-    var cty = document.getElementById('myChart2').getContext('2d');
-    
-        var positionLabels = positionData.filter(item => item.component_name === 'X').map(item => item.timestamp);
-        var positionValues = positionData.filter(item => item.component_name === 'X').map(item => item.value);
-    var chart = new Chart(cty, {
-        type: 'line',
-        data: {
-            labels: positionLabels,
-            datasets: [
-                {
-                    label: 'Position X',
-                    data: positionValues,
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                    fill: false
-                },
-               
-            ]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                title: {
-                    display: true,
-                    text: 'X component'
-                }
+    function createLineChart(labels, values) {
+        if (myChart) {
+            myChart.destroy(); // Clear previous chart instance
+        }
+
+        myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Position',
+                        data: values,
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                        fill: false
+                    },
+                ]
             },
-            scales: {
-                x: {
-                    display: true,
+            options: {
+                responsive: true,
+                plugins: {
                     title: {
                         display: true,
-                        text: 'Timestamp'
+                        text: `Position ${currentComponent} component`
                     }
                 },
-                y: {
-                    display: true,
-                    title: {
+                scales: {
+                    x: {
                         display: true,
-                        text: 'Value'
+                        title: {
+                            display: true,
+                            text: 'Timestamp'
+                        }
+                    },
+                    y: {
+                        display: true,
+                        title: {
+                            display: true,
+                            text: 'Value'
+                        }
                     }
                 }
             }
-        }
-    });
+        });
+    }
 
-    var cty = document.getElementById('myChart3').getContext('2d');
-    
-    var positionLabels = positionData.filter(item => item.component_name === 'Y').map(item => item.timestamp);
-    var positionValues = positionData.filter(item => item.component_name === 'Y').map(item => item.value);
-var chart = new Chart(cty, {
-    type: 'line',
-    data: {
-        labels: positionLabels,
-        datasets: [
-            {
-                label: 'Position Y',
-                data: positionValues,
-                borderColor: 'rgba(54, 162, 235, 1)',
-                backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                fill: false
-            },
-           
-        ]
-    },
-    options: {
-        responsive: true,
-        plugins: {
-            title: {
-                display: true,
-                text: 'Y component'
-            }
-        },
-        scales: {
-            x: {
-                display: true,
-                title: {
-                    display: true,
-                    text: 'Timestamp'
-                }
-            },
-            y: {
-                display: true,
-                title: {
-                    display: true,
-                    text: 'Value'
-                }
-            }
-        }
+    function showChart(component) {
+        currentComponent = component;
+        var filteredData = filterData(component);
+        createLineChart(filteredData.map(item => item.timestamp), filteredData.map(item => item.value));
     }
-});
-    var cty = document.getElementById('myChart4').getContext('2d');
-    
-    var positionLabels = positionData.filter(item => item.component_name === 'Z').map(item => item.timestamp);
-    var positionValues = positionData.filter(item => item.component_name === 'Z').map(item => item.value);
-var chart = new Chart(cty, {
-    type: 'line',
-    data: {
-        labels: positionLabels,
-        datasets: [
-            {
-                label: 'Position Z',
-                data: positionValues,
-                borderColor: 'rgba(54, 162, 235, 1)',
-                backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                fill: false
-            },
-           
-        ]
-    },
-    options: {
-        responsive: true,
-        plugins: {
-            title: {
-                display: true,
-                text: 'Z component'
-            }
-        },
-        scales: {
-            x: {
-                display: true,
-                title: {
-                    display: true,
-                    text: 'Timestamp'
-                }
-            },
-            y: {
-                display: true,
-                title: {
-                    display: true,
-                    text: 'Value'
-                }
-            }
-        }
-    }
-});
+
+    // Initial rendering of the chart for X component
+    showChart('X');
 </script>
 {% endblock %}

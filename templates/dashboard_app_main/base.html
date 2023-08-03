@@ -30,11 +30,32 @@
                   
                 </li>
                 <li class="has-subnav">
+                    <a href="{% url 'dashboard_app_main:dashboarddata' %}">
+                        <i class="fa fa-globe fa-2x"></i>
+                        <span class="nav-text">
+                            Data Machine 1
+                        </span>
+                    
+                    </a>
+                    
+                </li>
+                <li class="has-subnav">
+                    <a href="{% url 'dashboard_app_main:dashboarddata' %}">
+                        <i class="fa fa-globe fa-2x"></i>
+                        <span class="nav-text">
+                            Data Machine 2
+                        </span>
+                    
+                    </a>
+                    
+                </li>
+                <li class="has-subnav">
                     <a href="{% url 'dashboard_app_main:dashboard' %}">
                         <i class="fa fa-globe fa-2x"></i>
                         <span class="nav-text">
-                            Dashboard Summary
+                            Accumulated Time
                         </span>
+                    
                     </a>
                     
                 </li>
@@ -42,7 +63,25 @@
                     <a href="{% url 'dashboard_app_main:dashboardaxis' %}">
                         <i class="fa fa-globe fa-2x"></i>
                         <span class="nav-text">
-                            Axis Dashboard
+                            Axis Dashboard Machine 1
+                        </span>
+                    </a>
+                    
+                </li>
+                <li class="has-subnav">
+                    <a href="{% url 'dashboard_app_main:dashboardaxis2' %}">
+                        <i class="fa fa-globe fa-2x"></i>
+                        <span class="nav-text">
+                            Axis Dashboard Machine 2
+                        </span>
+                    </a>
+                    
+                </li>
+                <li class="has-subnav">
+                    <a href="{% url 'dashboard_app_main:dashboardtemperature' %}">
+                        <i class="fa fa-globe fa-2x"></i>
+                        <span class="nav-text">
+                            Temperature Dashboard Machine 2
                         </span>
                     </a>
                     
@@ -98,7 +137,7 @@
             {% block body_block %}
             {% endblock %}
         </div>
-            {% comment %} <script type="module" src="{% static 'scripts/scripts.js' %}"></script> {% endcomment %}
+            {% comment %} <script type="module" src="{% static 'scripts/scripts.js' %}"></script>  {% endcomment %}
         
     </body>
     
