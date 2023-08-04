@@ -41,7 +41,7 @@ Dashboard
         return positionData.filter(item => item.component_name === component);
     }
 
-    function createLineChart(labels, values) {
+    function createLineChart(labels, datasets) {
         if (myChart) {
             myChart.destroy(); // Clear previous chart instance
         }
@@ -50,22 +50,14 @@ Dashboard
             type: 'line',
             data: {
                 labels: labels,
-                datasets: [
-                    {
-                        label: 'Position',
-                        data: values,
-                        borderColor: 'rgba(54, 162, 235, 1)',
-                        backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                        fill: false
-                    },
-                ]
+                datasets: datasets
             },
             options: {
                 responsive: true,
                 plugins: {
                     title: {
                         display: true,
-                        text: `Position ${currentComponent} component`
+                        text: `Position for X, Y, and Z components`
                     }
                 },
                 scales: {
@@ -83,6 +75,11 @@ Dashboard
                             text: 'Value'
                         }
                     }
+                },
+                elements: {
+                    line: {
+                        tension: 0.4 // Adjust the tension for smoother curves (0 to 1)
+                    }
                 }
             }
         });
@@ -90,8 +87,35 @@ Dashboard
 
     function showChart(component) {
         currentComponent = component;
-        var filteredData = filterData(component);
-        createLineChart(filteredData.map(item => item.timestamp), filteredData.map(item => item.value));
+
+        var xData = filterData('X').map(item => item.value);
+        var yData = filterData('Y').map(item => item.value);
+        var zData = filterData('Z').map(item => item.value);
+        var labels = filterData('X').map(item => item.timestamp);
+
+        createLineChart(labels, [
+            {
+                label: 'Position X Component',
+                data: xData,
+                borderColor: 'rgba(54, 162, 235, 1)',
+                backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                fill: false
+            },
+            {
+                label: 'Position Y Component',
+                data: yData,
+                borderColor: 'rgba(255, 99, 132, 1)',
+                backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                fill: false
+            },
+            {
+                label: 'Position Z Component',
+                data: zData,
+                borderColor: 'rgba(75, 192, 192, 1)',
+                backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                fill: false
+            }
+        ]);
     }
 
     // Initial rendering of the chart for X component
